@@ -1,0 +1,53 @@
+From 542a99f7cbe8735e58459007237a4b57b2738077 Mon Sep 17 00:00:00 2001
+From: Patrick J <patrick.pddstudio@googlemail.com>
+Date: Mon, 30 Jan 2017 00:07:07 +0100
+Subject: [PATCH 1/2] Included /lib/aarch64-linux-gnu directory for glibc
+ requirement
+
+---
+ Library/Homebrew/requirements/glibc_requirement.rb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Library/Homebrew/requirements/glibc_requirement.rb b/Library/Homebrew/requirements/glibc_requirement.rb
+index fdbd2cd..7c76cdf 100644
+--- a/Library/Homebrew/requirements/glibc_requirement.rb
++++ b/Library/Homebrew/requirements/glibc_requirement.rb
+@@ -13,7 +13,7 @@ class GlibcRequirement < Requirement
+ 
+   def self.system_version
+     return @system_version if @system_version
+-    libc = ["/lib/x86_64-linux-gnu/libc.so.6", "/lib64/libc.so.6", "/lib/libc.so.6", "/lib/i386-linux-gnu/libc.so.6", "/lib/arm-linux-gnueabihf/libc.so.6"].find do |s|
++    libc = ["/lib/aarch64-linux-gnu/libc.so.6", "/lib/x86_64-linux-gnu/libc.so.6", "/lib64/libc.so.6", "/lib/libc.so.6", "/lib/i386-linux-gnu/libc.so.6", "/lib/arm-linux-gnueabihf/libc.so.6"].find do |s|
+       Pathname.new(s).executable?
+     end
+     raise "Unable to locate the system's glibc" unless libc
+-- 
+2.10.1
+
+
+From f982790c04cd2649d046008832c9cb7b375133fc Mon Sep 17 00:00:00 2001
+From: Patrick J <patrick.pddstudio@googlemail.com>
+Date: Mon, 30 Jan 2017 00:08:15 +0100
+Subject: [PATCH 2/2] Included /lib/aarch64-linux-gnu directory for ld.so
+ (2.19) lookup
+
+---
+ Library/Homebrew/cmd/install.rb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Library/Homebrew/cmd/install.rb b/Library/Homebrew/cmd/install.rb
+index a1da48e..1204541 100644
+--- a/Library/Homebrew/cmd/install.rb
++++ b/Library/Homebrew/cmd/install.rb
+@@ -279,7 +279,7 @@ module Homebrew
+     return unless OS.linux?
+     ld_so = HOMEBREW_PREFIX/"lib/ld.so"
+     return if ld_so.readable?
+-    sys_interpreter = ["/lib64/ld-linux-x86-64.so.2", "/lib/ld-linux.so.3", "/lib/ld-linux.so.2", "/lib/ld-linux-armhf.so.3"].find do |s|
++    sys_interpreter = ["/lib/aarch64-linux-gnu/ld-2.19.so", "/lib64/ld-linux-x86-64.so.2", "/lib/ld-linux.so.3", "/lib/ld-linux.so.2", "/lib/ld-linux-armhf.so.3"].find do |s|
+       Pathname.new(s).executable?
+     end
+     raise "Unable to locate the system's ld.so" unless sys_interpreter
+-- 
+2.10.1
+
